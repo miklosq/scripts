@@ -1,0 +1,4 @@
+#!/bin/tcsh -e
+
+cd /
+tar cf /tmp/mentes/teljes_mentes.tar / --exclude=/tmp/mentes

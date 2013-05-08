@@ -1,0 +1,9 @@
+echo $0 $1 $2 
+
+if [ "$1" -eq 0 ]; then
+	   echo "p1 nulla"
+else 
+	   echo "p1 nem nulla"
+fi
+
+exit 0

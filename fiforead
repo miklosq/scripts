@@ -1,0 +1,1 @@
+passwd < /tmp/myfifo & ( echo regijelszo ; sleep 2 ; echo ujjelszo ; sleep 2 ; echo ujjelszo ) > /tmp/myfifo

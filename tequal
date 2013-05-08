@@ -1,0 +1,12 @@
+#!/bin/sh
+# bash: -eq feltetelesen OK, == OK, = OK
+# zsh : -eq OK, == nem OK, = OK
+
+if [ "$TERM" = 'linux' ]
+then 
+	echo "TERM linux"
+	RPROMPT=' %~'
+else 
+	echo "TERM nem linux"
+	RPROMPT=''
+fi

@@ -1,0 +1,24 @@
+#!/bin/tcsh
+# aplreset.scr - Apache logfajl reset. Quartus Miklos, 2000/02/25.
+
+set alfajl = var/lib/apache/logs/access_log
+set elfajl = var/lib/apache/logs/error_log
+
+cd /
+if !( -f $alfajl ) then 
+	echo aplreset: nincs $alfajl.
+else
+	mv $alfajl $alfajl.`date +%m%d`
+	tar cf /tmp/mentes/apachelog.tar $alfajl.`date +%m%d`
+endif
+
+if !( -f $elfajl ) then
+	echo aplreset: nincs $elfajl.
+else
+	mv $elfajl $elfajl.`date +%m%d`
+	tar rf /tmp/mentes/apachelog.tar $elfajl.`date +%m%d`
+endif
+
+kill -HUP `cat /var/run/httpd.pid` 
+echo aplreset: Apache logfajl reset megtortent, regiek elmentve.
+exit 0

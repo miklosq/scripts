@@ -1,0 +1,22 @@
+#!/bin/csh
+# This script finds directories and lists the number of files 
+# in them and their word count.
+#
+foreach dir ($argv)
+	set num = 0
+	if ( -d $dir) then
+		echo "***** $dir is a directory."
+		set lsfile = `ls $dir`
+		echo " number of file in $dir is $#lsfile"
+ 
+		foreach file ($lsfile)
+			set string = `wc -l $dir/$file`
+			@ num += $string[1]
+		end
+
+		echo "  total number of lines in $dir directory is $sum"
+
+	else 
+		echo " ==> $dir is not a directory." 
+	endif
+end

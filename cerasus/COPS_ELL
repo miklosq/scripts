@@ -1,0 +1,64 @@
+#!/bin/tcsh -e
+# cops_ell - cops program futtato szkript. Quartus Miklos, 2000/05/31.
+# atmeneti fajlokat keszit az elso 7 sor kiiktatasara a diff-hez
+
+switch ( `date +%d` )
+	case "01" :
+		set nap = "1"
+		set tegnap = `date +%d -d '1 day ago'`
+		breaksw
+	case "02" :
+		set nap = "2"
+		set tegnap = "1"
+		breaksw
+	case "03" :
+		set nap = "3"
+		set tegnap = "2"
+		breaksw
+	case "04" :
+		set nap = "4"
+		set tegnap = "3"
+		breaksw
+	case "05" :
+		set nap = "5"
+		set tegnap = "4"
+		breaksw
+	case "06" :
+		set nap = "6"
+		set tegnap = "5"
+		breaksw
+	case "07" :
+		set nap = "7"
+		set tegnap = "6"
+		breaksw
+	case "08" :
+		set nap = "8"
+		set tegnap = "7"
+		breaksw
+	case "09" :
+		set nap = "9"
+		set tegnap = "8"
+		breaksw
+	case "10" :
+		set nap = "10"
+		set tegnap = "9"
+		breaksw
+	default :
+		set nap = `date +%d`
+		set tegnap = `date +%d -d '1 day ago'`
+		breaksw
+endsw
+
+set logfajl_tegnapi = /usr/local/cops_104/cerasus/`date +%Y_%b -d '1 day ago'`_$tegnap
+set logfajl_most = /usr/local/cops_104/cerasus/`date +%Y_%b`_$nap
+set egyik = /tmp/tgn_$$
+set masik = /tmp/ma_$$
+
+echo cops checklista keszitese...
+/usr/local/bin/cops
+cp $logfajl_tegnapi $egyik
+cp $logfajl_most $masik
+vi $egyik +1,7d +wq > /dev/null
+vi $masik +1,7d +wq > /dev/null
+diff $egyik $masik 
+rm $egyik $masik 

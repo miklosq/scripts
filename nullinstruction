@@ -1,0 +1,4 @@
+if [ ! -r bela ] ; then
+	:
+fi
+exit 0

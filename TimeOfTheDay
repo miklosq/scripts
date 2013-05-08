@@ -1,0 +1,14 @@
+#!/bin/csh
+
+echo "Is it morning? (Yes or No)"
+read timeofday
+if [ $timeofday = "Yes" ]; then
+	echo "Good Morning" 
+elif [ $timeofday = "No" ]; then
+	echo "Good Afternoon"
+else
+     echo "Sorry, $timeofday not recognized. Enter Yes or No."
+	exit 1
+fi
+
+exit 0

@@ -1,0 +1,5 @@
+echo "NELSON ARISPE, EDUARDO ROJAS, AND HARVEY B. POLLARD" | sed 's/\([A-Z]\)\([A-Z]*\)/\1\L\2/g'
+OR
+echo "NELSON ARISPE, EDUARDO ROJAS, AND HARVEY B. POLLARD" | perl -MLingua::EN::Titlecase -ne '$tc = Lingua::EN::Titlecase->new($_); print $tc->title' 
+OR
+python -c "print (' '.join([str.capitalize(x) for x in 'NELSON ARISPE, EDUARDO ROJAS, AND HARVEY B. POLLARD'.split(' ')]))" 

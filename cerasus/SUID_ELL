@@ -1,0 +1,13 @@
+#!/bin/tcsh
+# suid_ell - SUID, SGID programokat kigyujto szkript. Quartus Miklos, 2000/02/25.
+
+umask 066
+set logfajl = /var/log/findlog/suidlog.`date +%m%d`
+set logfajl_tegnapi = /var/log/findlog/suidlog.`date -d '1 day ago' +%m%d`
+
+echo -n SUID, SGID checklista keszitese...
+find / -type f -a -perm -4000 -print > $logfajl
+echo '-----SGID-----' >> $logfajl
+find / -type f -a -perm -2000 -print >> $logfajl
+diff $logfajl_tegnapi $logfajl
+echo kesz.

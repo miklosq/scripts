@@ -1,0 +1,14 @@
+#!/usr/local/bin/tcsh
+# Lecsereli a Ctrl-M karaktereket a fajlban semmire. QM
+
+@ db = 0
+foreach fajl ( `find . -name '*.html'` )
+vi $fajl +%s///g +wq >& /dev/null
+@ db += 1
+echo $db. ok
+end
+
+echo 
+echo $db darab kesz. 
+
+exit 0

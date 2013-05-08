@@ -1,0 +1,7 @@
+#!/bin/csh
+# Ez a példa szkript bemutatja hogyan kell fájlokat globálisan kezelni.
+# .gif kiterjesztésû fájlokat nevez át .jpg-re. 
+
+foreach i (akarmi?.gif)
+	mv $i $i:s/gif/jpg/
+end

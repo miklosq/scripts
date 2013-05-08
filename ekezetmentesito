@@ -1,0 +1,7 @@
+find ./ -type f -printf "\"%h/%f\"\n" |
+xargs rename -v "y/áéíóöõúüûÁÉÍÓÖÕÚÜÛ/aeiooouuuAEIOOOUUU/"
+
+A rename a perl csomag resze (debianban)
+bbyy,
+--
++-+-+-+-+-+-+ BORCSEK Márk     \ Nagykanizsa

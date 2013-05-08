@@ -1,0 +1,26 @@
+
+Szia!
+
+szecso@matavnet.hu az alábbiakat írta a következõ hírüzenetben:
+webmester.1056.4@HIX...
+> Hogy lehet megoldani azt hogy a alp etejen vannak az abc betui alatta meg
+a
+> lista, es ha a fenti betukre kattint valaki akkor leugorjon a megefeleo
+> betuhoz.
+
+Ezt a lap tetejere:
+<a name="top"></a><a href="#a">A</a><a href="#b">B</a><a href="#c">C</a>
+
+Ezt meg lejjebb:
+<a name="a"></a>A betus programok ide  <a href="#top">vissza a lap
+tetejére</a>
+...
+...
+...
+<a name="b"></a>B betus programok ide  <a href="#top">vissza a lap
+tetejére</a>
+...
+...
+...
+<a name="c"></a>C betus programok ide  <a href="#top">vissza a lap
+tetejére</a>

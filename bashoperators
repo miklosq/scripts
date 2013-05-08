@@ -1,0 +1,11 @@
+#!/bin/bash
+
+QUERY_STRING="name/MrSomeoneSomewhere"
+
+echo $QUERY_STRING
+str=${QUERY_STRING#*/}
+echo $str
+
+a="alma"
+str=${a:-bela}
+echo $str

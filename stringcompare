@@ -1,0 +1,7 @@
+# only in Bash!
+i="bela"
+
+if [ $i == "bela" ]; then
+   echo ok
+fi
+exit 0

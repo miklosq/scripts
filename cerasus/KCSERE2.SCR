@@ -1,0 +1,16 @@
+#!/usr/local/bin/tcsh
+# Ez a szkript vegigmegy a konyvtarstrukturan letezo minden .html kiterjesztesu fajlon es
+# lecsereli a '\'-t '/'-re! 2000. Feb. 11, Quartus Miklos (C), Cerarus Butor Kft.
+
+@ db = 0
+echo -n Varj
+
+foreach fajl ( `find . -name '*.html'` )
+vi $fajl +'%s/\\/\//g' +wq >& /dev/null
+@ db += 1
+echo -n .
+end
+
+echo $db darab kesz. 
+
+exit 0

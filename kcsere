@@ -1,0 +1,11 @@
+#!/usr/local/bin/tcsh
+# Lecsereli a szovegfajlokban a Ctrl-M karaktereket semmire. 2000/02/20
+
+@ szm = 0
+#foreach fajl ( `find . -name '*.html' -o -name '*.c'` )
+foreach fajl ( `find . -type f` )
+vi $fajl +%s///g +wq 
+@ szm += 1
+echo $szm. ok 
+end
+echo kesz.

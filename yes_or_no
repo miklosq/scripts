@@ -1,0 +1,28 @@
+#!/bin/csh
+
+yes_or_no () {
+echo "Parameters are $*" 
+while ( 1 )
+	echo -n "Enter yes or no " 
+	set x="$<"
+	switch ( $x )
+	case yes: 
+	  return 0
+	  breaksw
+	case no:
+	  return 1
+	  breaksw
+	default:
+ 	  echo "Answer yes or no"
+	endsw
+end
+}
+echo "Original parameters are $*"
+
+if yes_or_no "Is your name $1? "
+then 
+	echo "Hi $1"
+else
+	echo "Never mind"
+endif 
+exit 0

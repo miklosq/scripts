@@ -1,0 +1,12 @@
+#!/bin/tcsh
+# nous_ell - Nem letezo user altal birtokolt programokat kigyujto szkript.
+# Quartus Miklos, 2000/02/25.
+
+umask 066
+set logfajl = /var/log/findlog/nouslog.`date +%m%d`
+set logfajl_tegnapi = /var/log/findlog/nouslog.`date -d '1 day ago' +%m%d`
+
+echo -n Nouser checklista keszitese...
+find / \( -nouser -o -nogroup \) -print > $logfajl
+diff $logfajl_tegnapi $logfajl
+echo kesz.

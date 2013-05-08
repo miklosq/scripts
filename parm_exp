@@ -1,0 +1,12 @@
+#!/bin/csh
+
+foreach i (1 2)
+	touch ${i}_tmp
+	echo ${i}_tmp letrejott
+	ls -l ?_tmp
+	sleep 3
+	rm ${i}_tmp
+	echo ${i}_tmp torlodott
+	ls -l ?_tmp
+	sleep 3
+end

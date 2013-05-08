@@ -1,0 +1,18 @@
+<HTML><HEAD>
+<SCRIPT LANGUAGE="JavaScript">
+<!-- start hiding
+oneImage = new Image (55,68);
+twoImage = new Image (55,68);
+oneImage.src = "50star.gif";
+twoImage.src = "H_flag.gif";
+// quit hiding -->
+</SCRIPT></HEAD><BODY>
+<A HREF="http://www.usc.edu"
+onMouseOver = "document.ToHome.src = twoImage.src;return true;"
+onMouseOut  = "document.ToHome.src = oneImage.src;return true;">
+<IMG NAME="ToHome" SRC="50star.gif" WIDTH=55 HEIGHT=68 BORDER=0>
+</A></BODY></HTML>
+---------------------
+Udv:    Szabolcs
+Certified Microsoft Trainer
+http://www-rcf.usc.edu/~petrovay

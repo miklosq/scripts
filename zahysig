@@ -1,0 +1,1 @@
+Z='21N16I25C25E30, 40M30E33E25T15U!' ;IFS=' ABCDEFGHIJKLMNOPQRSTUVWXYZ ';set $Z ;for i { [[ $i = ? ]]&&print $i&&break;[[ $i = ??? ]]&&j=$i&&i=${i%?};typeset -i40 i=8#$i;print -n ${i#???};[[ "$j" = ??? ]]&&print -n "${j#??} "&&j=;typeset +i i;};IFS=' 0123456789 ';set $Z;for i { [[ $i = , ]]&&i=2;[[ $i = ?? ]]||typeset -l i;j="$j $i";typeset +l i;};print "$j"

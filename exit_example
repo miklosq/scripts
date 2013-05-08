@@ -1,0 +1,3 @@
+echo 'This program returns an exit status'
+echo 'of 0.'
+exit 0

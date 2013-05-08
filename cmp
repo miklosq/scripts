@@ -1,0 +1,15 @@
+#!/bin/tcsh
+#
+#
+cp a tmp$$
+cmp -s tmp tmp$$
+if ( ! ( -fr tmp ) || (( -fr tmp ) && ( $? )) ) then
+	echo "Bummer! Changed or does not exist." 
+	cp tmp$$ tmp
+	rm tmp$$
+	exit 1
+endif
+
+echo "Killer!"
+rm tmp$$
+exit 0

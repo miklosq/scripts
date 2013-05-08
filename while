@@ -1,0 +1,6 @@
+n=1
+echo n is $n
+while [ $n -lt 10 ]; do
+	echo $n
+	n=$((n+1))
+done

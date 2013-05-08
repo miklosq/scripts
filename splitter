@@ -1,0 +1,4 @@
+IFS=:
+line='qmi:x:1000:1000:Miklos Quartus,,,:/home/qmi:/bin/zsh'
+set x $line
+echo "\$6 is '$6'"

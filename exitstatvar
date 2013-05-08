@@ -1,0 +1,11 @@
+#echo OK
+asdfasdf
+exstat=$?
+
+if [ $exstat == 0 ]
+   then echo "exstat nulla"
+else 
+   echo "exstat nem nulla"
+fi
+
+exit 0

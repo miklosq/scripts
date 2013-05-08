@@ -1,0 +1,11 @@
+#!/usr/local/bin/tcsh
+# Ez a szkript bemutatja a here documentek hasznalatat. 
+# nak keteznie kell ugyanabban a konyvtarban osszesen 4 sorral.
+
+ed a_here_document_file << EDDIG!
+%s/sor/fanyul/g
+w
+q
+EDDIG! 
+
+exit 0

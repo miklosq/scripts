@@ -1,0 +1,3 @@
+#!/usr/local/bin/tcsh
+
+vi cgi2.html +'%s/\\/\//g' +wq

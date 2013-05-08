@@ -1,0 +1,7 @@
+if [ "$?" == 0 ]; then
+	echo "status nulla"
+else
+	echo "status nem nulla"
+fi
+
+exit 0

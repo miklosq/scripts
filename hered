@@ -1,0 +1,23 @@
+#!/bin/tcsh -f
+
+#foreach fajl ( *.test )
+#	ed $fajl << EDDIG!
+#	%s///g
+#	w
+#	q
+#	EDDIG!
+#end
+
+setenv V "123 aaa"
+
+echo -n " \
+cica \
+bela "> H
+echo \" valamilyen progi \" >> H
+echo " \
+madar $V " >> H
+
+if ! ( $? ) echo H written: 
+cat H
+
+exit 0

@@ -1,0 +1,6 @@
+#!/bin/sh -T
+
+trap 'echo TRAP!; ps; exit 1' HUP;
+
+echo 'Started...'
+read a

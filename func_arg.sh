@@ -1,7 +1,7 @@
 args()
 {
-   echo $#;
+   echo "number of args passed:" $#;
 }
 
-v="egy ketto harom"
+v="arg1 arg2 arg3"
 args $v

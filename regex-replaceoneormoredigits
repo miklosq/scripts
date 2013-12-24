@@ -1,0 +1,2 @@
+echo "asdfasdfasdf 8887778 asdffassd" | sed -e "s/[0-9]\{1,\}//"
+echo "asdfasdfasdf 878 asdffassd" | sed -e "s/[0-9]\{1,\}//"

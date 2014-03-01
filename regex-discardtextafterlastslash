@@ -1,0 +1,3 @@
+str='abc/def/foo'
+echo $str
+echo "${str%/*}/"

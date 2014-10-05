@@ -136,34 +136,37 @@ do_everything() {
     ######################################################################
 
     ### all incoming TCP packets
-    # SSH
+    # ssh
     #$FW -A in_tcp_pub -p TCP --dport 22 -j in_ssh_pub
     #$FW -A in_tcp_pub -p TCP --dport 22 -j ACCEPT
-    # Skype
-    $FW -A in_tcp_pub -p TCP --dport 32804 -j ACCEPT
+    # skype is non-free: 
+    # http://www.fsf.org/campaigns/priority-projects/priority-projects/highpriorityprojects#Replaceskype
+    #$FW -A in_tcp_pub -p TCP --dport 32804 -j ACCEPT
     #$FW -A in_tcp_pub -p TCP --dport 113 -j REJECT --reject-with tcp-reset
+    # incoming packets from web browsing
+    $FW -A in_tcp_pub -p TCP -m multiport --sports 80,443 -j ACCEPT
     $FW -A in_tcp_pub -m limit --limit 30/m -j LOG --log-prefix "Unauth TCP: "
+    # finally deny all
     $FW -A in_tcp_pub -j DROP
     
     ### all incoming UDP packets
     #$FW -A in_udp_pub -p UDP --dport 68 -j ACCEPT
     $FW -A in_udp_pub -p UDP --sport 32769:65535 --dport 33434:33523 -j ping_tracert
+    # finally deny all
     $FW -A in_udp_pub -j DROP
     
-    #echo 3...   
     ### the main INPUT chain
     $FW -A INPUT -i $LOCAL_DEV -j noise
     $FW -A INPUT -i $LOCAL_DEV -p TCP --syn -j in_synprot_all
     $FW -A INPUT -i $LOCAL_DEV -p ALL -m state --state ESTABLISHED,RELATED -j ACCEPT
     $FW -A INPUT -i lo -p ALL -j ACCEPT
-    $FW -A INPUT -p ICMP -j in_icmp_pub
+    $FW -A INPUT -p ICMP -i $LOCAL_DEV -j in_icmp_pub
     $FW -A INPUT -p TCP -i $LOCAL_DEV -j in_tcp_pub
     $FW -A INPUT -p UDP -i $LOCAL_DEV -j in_udp_pub
 
     # final policy 
     $FW -A INPUT -j DROP
     
-    #echo 3a...   
     ######################################################################
     ### OUTGOING packets
     ######################################################################

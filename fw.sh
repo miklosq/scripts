@@ -11,19 +11,20 @@
 MYNAME="`basename "$0"`"
 
 ### configurable settings
-LOCAL_ROUTER="192.168.0.1"
 #LOCAL_ROUTER="192.168.1.1"
-#LOCAL_ROUTER="192.168.43.1"
+#LOCAL_ROUTER="192.168.137.1"
+LOCAL_ROUTER="192.168.8.1"
 #LOCAL_ROUTER="172.16.240.1"
 #DHCP_SERVER="172.16.240.2"
 DHCP_SERVER=$LOCAL_ROUTER
-OUT_DNS1="192.168.0.1"
+OUT_DNS1=$LOCAL_ROUTER
 #OUT_DNS1="194.168.4.100"
 OUT_DNS2="8.8.4.4"
-#OUT_DNS2="194.168.8.100"
+#OUT_DNS2="193.225.13.113"
 
 # local network settings
-LOCAL_DEV="wlan0"
+LOCAL_DEV="wlan1"
+#LOCAL_DEV="eth0"
 IBMLAPTOP=""
 
 # trusted host
@@ -138,23 +139,23 @@ do_everything() {
     ### all incoming TCP packets
     # ssh
     #$FW -A in_tcp_pub -p TCP --dport 22 -j in_ssh_pub
-    #$FW -A in_tcp_pub -p TCP --dport 22 -j ACCEPT
-    # skype is non-free: 
-    # http://www.fsf.org/campaigns/priority-projects/priority-projects/highpriorityprojects#Replaceskype
+    # skype
     #$FW -A in_tcp_pub -p TCP --dport 32804 -j ACCEPT
     #$FW -A in_tcp_pub -p TCP --dport 113 -j REJECT --reject-with tcp-reset
-    # incoming packets from web browsing
+    # all http/https from pages that are visited
     $FW -A in_tcp_pub -p TCP -m multiport --sports 80,443 -j ACCEPT
+    # all imaps from email clients
+    $FW -A in_tcp_pub -i $LOCAL_DEV -p TCP --sport 993 -j ACCEPT
+    #
     $FW -A in_tcp_pub -m limit --limit 30/m -j LOG --log-prefix "Unauth TCP: "
-    # finally deny all
     $FW -A in_tcp_pub -j DROP
     
     ### all incoming UDP packets
     #$FW -A in_udp_pub -p UDP --dport 68 -j ACCEPT
     $FW -A in_udp_pub -p UDP --sport 32769:65535 --dport 33434:33523 -j ping_tracert
-    # finally deny all
     $FW -A in_udp_pub -j DROP
     
+    #echo 3...   
     ### the main INPUT chain
     $FW -A INPUT -i $LOCAL_DEV -j noise
     $FW -A INPUT -i $LOCAL_DEV -p TCP --syn -j in_synprot_all
@@ -167,6 +168,7 @@ do_everything() {
     # final policy 
     $FW -A INPUT -j DROP
     
+    #echo 3a...   
     ######################################################################
     ### OUTGOING packets
     ######################################################################
@@ -190,48 +192,12 @@ do_everything() {
 
     #echo 4...   
     ### gmail smtp servers
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.108 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.109 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.108 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.109 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.16 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.16 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.16 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.16 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.108 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.108 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.109 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.109 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.16 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.16 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.108 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.108 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.109 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.109 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.16 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.16 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.108 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.108 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.109 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.109 -p TCP --dport 587 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.108 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.109 -p TCP --dport 465 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.16 -p TCP --dport 465 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.0.0/16 -p TCP --dport 465 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.0.0/16 -p TCP --dport 587 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 65.233.0.0/16 -p TCP --dport 465 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 65.233.0.0/16 -p TCP --dport 587 -j ACCEPT
     # gmail imap
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.108 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.109 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.108 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.108 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.69.108 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.16 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.16 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.16 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.69.16 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.109 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.109 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.16 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.108 -p TCP --dport 993 -j ACCEPT
-    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.109 -p TCP --dport 993 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.0.0/16 -p TCP --dport 993 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 209.85.229.108 -p TCP --dport 993 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 209.85.229.109 -p TCP --dport 993 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.79.108 -p TCP --dport 993 -j ACCEPT
@@ -239,13 +205,19 @@ do_everything() {
     $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.108 -p TCP --dport 993 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.109 -p TCP --dport 993 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.16 -p TCP --dport 993 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.205.108 -p TCP --dport 993 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.205.109 -p TCP --dport 993 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 64.233.160.0/19 -p TCP --dport 993 -j ACCEPT
     # google talk chat and GCM (Google Cloud Messaging)
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.65.125 -p TCP --dport 5222 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.125 -p TCP --dport 5222 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.70.125 -p TCP --dport 5222 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.125 -p TCP --dport 5222 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 209.85.147.125 -p TCP --dport 5222 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.130.125 -p TCP --dport 5222 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.132.125 -p TCP --dport 5222 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 74.125.136.125 -p TCP --dport 5222 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 64.233.160.0/19 -p TCP --dport 5222 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.66.188 -p TCP --dport 5228 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.67.188 -p TCP --dport 5228 -j ACCEPT
     $FW -A OUTPUT -o $LOCAL_DEV -d 173.194.78.188 -p TCP --dport 5228 -j ACCEPT
@@ -278,10 +250,18 @@ do_everything() {
     #$FW -A OUTPUT -o $LOCAL_DEV -d 54.229.75.238 -p TCP --dport 22 -j ACCEPT
     # my google cloud engine
     #$FW -A OUTPUT -o $LOCAL_DEV -d 192.158.30.63 -p TCP --dport 22 -j ACCEPT
+
     # outgoing ftp to uk debian mirror
     #$FW -A OUTPUT -o $LOCAL_DEV -d 212.219.56.184 -p TCP --dport 21 -j ACCEPT
     #$FW -A OUTPUT -o $LOCAL_DEV -d 212.219.56.184 -p TCP --dport 1024:65535 -j ACCEPT
-    #echo 5b...   
+    #
+    # outgoing ftp to hu (ftp.freepark.org) debian mirror
+    $FW -A OUTPUT -o $LOCAL_DEV -d 195.228.252.133 -p TCP --dport 21 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 195.228.252.133 -p TCP --dport 1024:65535 -j ACCEPT
+
+    # outgoing ftp to www.miklos.info
+    $FW -A OUTPUT -o $LOCAL_DEV -d 185.7.249.1 -p TCP --dport 21 -j ACCEPT
+    $FW -A OUTPUT -o $LOCAL_DEV -d 185.7.249.1 -p TCP --dport 1024:65535 -j ACCEPT
 
     ### allowed http and https everywhere
     $FW -A OUTPUT -o $LOCAL_DEV -p TCP -m multiport --dports 80,443 -j ACCEPT
@@ -312,7 +292,6 @@ do_everything() {
     ### the main FORWARD chain
     $FW -P FORWARD DROP
 
-    #echo 6...   
 }
 
 testrun() {

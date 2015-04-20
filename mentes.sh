@@ -2,13 +2,14 @@
 # Filename: mentes.sh
 # Author: Miklos Quartus
 
-BACKUPDIR=/media/usb0
+#BACKUPDIR=/media/usb0
+BACKUPDIR=/media/qmi/b783dafc-feb8-4c46-920c-35bbff6180cf
 
 echo "backup script" $0 "started."
-grep -q "/media/usb0" /etc/mtab || {
-	echo $0 error: "backup device is not mounted. Exiting (1)."
-	exit 1
-}
+#grep -q "/media/usb0" /etc/mtab || {
+#	echo $0 error: "backup device is not mounted. Exiting (1)."
+#	exit 1
+#}
 
 echo "preparing directories..."
 

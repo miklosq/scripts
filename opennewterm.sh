@@ -9,11 +9,14 @@ fi
 
 if ! getent hosts $host > /dev/null; then echo "host is unknown. exiting."; exit 1; fi
 
-#ping -c 1 -q $host > /dev/null 2>&1
-#if [ "$?" == 0 ]; then
+ping -c 1 -q $host > /dev/null 2>&1
+hostreachable=$?
+
+if [ "$hostreachable" == 0 ]; then
    screen -ln -t "$host" ssh $host
-#else
-#   echo "could not connect. exiting."
-#fi
+else
+   echo "Could not connect to '$host'. Exiting."
+   exit 1
+fi
 
 exit 0
